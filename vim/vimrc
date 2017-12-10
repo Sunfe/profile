@@ -1,0 +1,664 @@
+" ----------------------------------------------------------------------------
+" Author:  ruanyl
+" Version: 1.1
+" ----------------------------------------------------------------------------
+
+set nocompatible
+
+"Load plugins
+if filereadable(expand("~/.vim/vimrc.before"))
+  source ~/.vim/vimrc.before
+endif
+
+"Load plugins
+if filereadable(expand("~/.vim/vimrc.bundles"))
+  source ~/.vim/vimrc.bundles
+endif
+
+filetype plugin indent on
+syntax enable
+syntax on
+
+"colorscheme gruvbox
+"colorscheme solarized
+"colorscheme molokai
+"colorscheme desert
+
+set background=dark
+set t_Co=256
+set history=200           "history: number of command-lines remembered
+set autoread              " auto reload file after being modified
+set shortmess=atI         " do not show initial page
+set nobackup
+set noswapfile
+set cursorcolumn          " highlight current column
+set cursorline            " highlight current line
+set t_ti= t_te=           " alway show the content on the screen after exist VIM
+set mouse-=a              " disable mouse
+set selection=inclusive   "set selection=exclusive
+set selectmode=mouse,key
+set title                 " change the terminal's title
+set novisualbell          " don't beep
+set noerrorbells          " don't beep
+set t_vb=
+set tm=500
+set nostartofline         " keep cursor postion when switching between buffers
+
+set number " show line number
+set nowrap " disable wrap
+
+"set list
+"set listchars=tab:›\ ,trail:•,extends:❯,precedes:❮
+
+set showmatch         " show matched brackets
+set mat=2             " How many tenths of a second to blink when matching brackets
+
+set hlsearch          " highlight the searching words
+set ignorecase        " ingnore case when do searching
+
+set incsearch         " instant search
+set smartcase         " ignore case if search pattern is all lowercase, case-sensitive otherwise
+
+set foldenable        " code folding
+set foldmethod=indent " options: manual, indent, expr, syntax, diff, marker
+set foldlevel=99
+
+set smartindent       " Do smart autoindenting when starting a new line
+set autoindent        " always set autoindenting on
+
+set tabstop=4         " Number of spaces that a <Tab> in the file counts for.
+set shiftwidth=4      " number of spaces to use for autoindenting
+set softtabstop=4     " Number of spaces that a <Tab> counts for while performing editing operations
+set smarttab
+set expandtab         " when typing <Tab>, use <space> instead
+set shiftround        " use multiple of shiftwidth when indenting with '<' and '>'
+
+set hidden            " A buffer becomes hidden when it is abandoned
+set wildmode=longest:full,full
+set ttyfast
+
+set relativenumber " show relative line number
+set ruler          " show the current line number and column number
+set showcmd        " show the current typing command
+set noshowmode     " Show current mode
+set scrolloff=7    " Set 7 lines to the cursor - when moving vertically using j/k
+
+" File encode:encode for varied filetype
+set encoding=utf-8
+set fileencodings=utf-8,ucs-bom,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+set helplang=en
+set termencoding=utf-8
+
+set ffs=unix,dos,mac         " Use Unix as the standard file type
+set formatoptions+=m
+set formatoptions+=B         " When joining lines, don't insert a space between two multi-byte characters.
+set completeopt=longest,menu " behaviour of insert mode completion
+set wildmenu                 " auto complete command
+set wildignore=**.o,*~,.swp,*.bak,*.pyc,*.class " Ignore compiled files
+
+set viminfo^=% " Remember info about open buffers on close
+set magic      " For regular expressions turn magic on
+
+set backspace=eol,start,indent               " Configure backspace so it acts as it should act
+set whichwrap+=<,>,h,l
+set pastetoggle=<F5>                         " when in insert mode, toggle between 'paste' and 'nopaste'
+
+"let &colorcolumn="80,".join(range(120,999),",")
+let &colorcolumn="120"
+
+autocmd InsertEnter * :set norelativenumber " no relativenumber in insert mode
+autocmd InsertLeave * :set relativenumber   " show relativenumber when leave insert mode
+
+"create undo file
+if has('persistent_undo')
+  set undofile                " So is persistent undo ...
+  set undolevels=1000         " Maximum number of changes that can be undone
+  set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+  set undodir=~/.undodir/
+endif
+
+
+if has('statusline')
+    set laststatus=2
+    set statusline=%<%f\                     " Filename
+    set statusline+=%w%h%m%r                 " Options
+    set statusline+=%{fugitive#statusline()} " Git Hotness
+    set statusline+=\ [%{&ff}/%Y]            " Filetype
+    set statusline+=\ [%{getcwd()}]          " Current dir
+    set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+endif
+
+
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+au InsertLeave * set nopaste
+
+"close popup menu when leave insert mode
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+
+autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
+autocmd FileType javascript,json,css,scss,html set tabstop=2 shiftwidth=2 expandtab ai
+
+autocmd BufReadPre * if getfsize(expand("%")) > 10000000 | syntax off | endif
+
+" ----------------------------------------------------------------------------
+" Key Mappings:Customized keys
+" ----------------------------------------------------------------------------
+
+command! W w !sudo tee % > /dev/null
+
+"goto older/newer position in change list
+"nnoremap <silent> ( g;
+"nnoremap <silent> ) g,
+
+"replace currently selected text with default register without yanking it
+"vnoremap p "_dP
+
+" use ctrl-c to copy to system clipboard
+"vnoremap <C-c> "*y
+
+" use <C-V> to paste yanked content
+"inoremap <C-V> <C-R>"
+
+"Treat long lines as break lines (useful when moving around in them)
+noremap j gj
+noremap k gk
+
+" better command line editing
+" cnoremap <C-j> <t_kd>
+" cnoremap <C-k> <t_ku>
+" cnoremap <C-a> <Home>
+" cnoremap <C-e> <End>
+
+"Smart way to move between windows
+" noremap <C-j> <C-W>j
+" noremap <C-k> <C-W>k
+" noremap <C-h> <C-W>h
+" noremap <C-l> <C-W>l
+
+" Go to home and end using capitalized directions
+noremap H 0
+noremap L $
+noremap Y y$
+
+" Remap VIM 0 to first non-blank character
+"noremap 0 ^
+
+" Speed up scrolling of the viewport slightly
+nnoremap <C-e> 2<C-e>
+nnoremap <C-y> 2<C-y>
+
+"no Highlight
+"noremap <silent><leader>/ :nohls<CR>
+
+" I can type :help on my own, thanks.
+" noremap <F1> <Esc>"
+
+"nnoremap ; :
+"nnoremap ' :b
+
+"Keep search pattern at the center of the screen."
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+
+"Use 'm/M' to move among buffers
+noremap <leader>m :bn<CR>
+noremap <leader>M :bp<CR>
+
+" remap U to <C-r> for easier redo
+"nnoremap U <C-r>
+
+" select all
+"noremap <leader>sa ggVG
+
+"nnoremap dp :diffput<CR>
+"nnoremap dg :diffget<CR>
+
+" toggle between two buffers
+"nnoremap t <C-^>
+
+"" Vmap for maintain Visual Mode after shifting > and <
+"vnoremap < <gv
+"vnoremap > >gv
+
+"" Move visual block
+"vnoremap J :m '>+1<CR>gv=gv
+"vnoremap K :m '<-2<CR>gv=gv
+
+" Quick move in insert mode
+inoremap <C-o> <Esc>o
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+
+if has('macunix')
+  " pbcopy for OSX copy/paste
+  vnoremap <C-x> :!pbcopy<CR>
+  vnoremap <C-c> :w !pbcopy<CR><CR>
+endif
+
+hi! link SignColumn   LineNr
+hi! link ShowMarksHLl DiffAdd
+hi! link ShowMarksHLu DiffChange
+
+" for error highlight
+highlight clear SpellBad
+highlight SpellBad term=standout ctermfg=1 term=underline cterm=underline
+highlight clear SpellCap
+highlight SpellCap term=underline cterm=underline
+highlight clear SpellRare
+highlight SpellRare term=underline cterm=underline
+highlight clear SpellLocal
+highlight SpellLocal term=underline cterm=underline
+
+" Because Vim doesn't like
+" pasting that works.
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+function! XTermPasteBegin()
+    set pastetoggle=<Esc>[201~
+    set paste
+    return ""
+endfunction
+
+"Load local settings
+if filereadable(expand("~/.vim/vimrc.local"))
+  source ~/.vim/vimrc.local
+endif
+
+
+
+" my vimrc
+
+set nocompatible
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+if has("vms")
+  set nobackup		" do not keep a backup file, use versions instead
+else
+  set backup		" keep a backup file
+endif
+set history=50		" keep 50 lines of command line history
+set ruler		" show the cursor position all the time
+set showcmd		" display incomplete commands
+set incsearch		" do incremental searching
+"{{{ lzc specific config  
+
+set number
+set relativenumber
+set cindent shiftwidth=4
+set expandtab
+"set cursorline
+set noautochdir
+"set nowrapscan
+set nobackup
+set noswapfile
+"let mapleader=","
+set hidden
+set tabstop=4
+set shiftwidth=4
+set tw=120
+"GUI VIM 字体大小
+set guifont=Monaco:h14
+
+syntax on
+set hlsearch
+nmap <leader>w  :w!<CR>
+nmap <leader>s  :shell<CR>
+"nmap <leader>q  :qa!<CR>
+
+"显示中文
+set fileencodings=utf-8,gb2312,gbk,gb18030
+set termencoding=utf-8
+set fileformats=unix
+set encoding=prc
+
+"^M显示的问题
+set fileformats=unix,dos
+
+"映射快捷键
+map tt           <Esc>:TlistToggle<CR>
+map <C-l>        <Esc>:close<CR>
+map <C-p>        <Esc>:Project<CR>
+map <C-h>        <Esc>:nohl<CR>
+map <leader>h    #`'
+map J            10j
+map K            10k
+map gd           gd``zz
+map gD           gD``zz
+map <C-c>        "+y
+map <C-x>        "+d
+
+
+"cscope使用quickfix"
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+"查找忽略大小写
+set ignorecase
+
+
+
+"taglist 属性配置
+let Tlist_Exit_OnlyWindow=1
+let Tlist_Show_One_File=1
+
+"project属性配置
+let g:proj_flags="cngimstb" 
+let g:proj_window_width=50
+
+"makefile文件tab键不转化为空格
+autocmd FileType make set noexpandtab 
+
+
+"toggle relative number
+"function! NumberToggle()
+"    if(&relativenumber == 1)
+"        set number
+"    else
+"        set relativenumber
+"    endif
+"endfunc
+"nnoremap <C-n> :call NumberToggle()<cr>
+
+" 在插入模式下，用ctrl+j来移动
+
+"quickfix
+nmap cn      <Esc>:cn<cr>
+nmap cp      <Esc>:cp<cr>
+nmap cw      <Esc>:cw<cr> 
+
+"forbid bakcup file
+set nobackup
+
+if ! exists('g:TagHighlightSettings')
+    let g:TagHighlightSettings = {}
+endif
+let g:TagHighlightSettings['DefaultDirModePriority'] = 'CurrentDirectory'
+
+"{coding
+"多行注释#if0
+vmap <C-S-p>  dO#endif<Esc>PO#if 0<Esc>
+"nmap <C-S-C>  /*<Esc>A*/<Esc>
+nmap <leader>p  %dd``dd 
+"}coding
+
+
+
+"" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
+"" let &guioptions = substitute(&guioptions, "t", "", "g")
+"
+"" Don't use Ex mode, use Q for formatting
+map Q gq
+
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
+
+" In many terminal emulators the mouse works just fine, thus enable it.
+"if has('mouse')
+"  set mouse=a
+"endif
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin indent on
+
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
+
+  " For all text files set 'textwidth' to 78 characters.
+  autocmd FileType text setlocal textwidth=78
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  " Also don't do it when the mark is in the first line, that is the default
+  " position when opening a file.
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+
+  augroup END
+
+else
+
+  set autoindent		" always set autoindenting on
+
+endif " has("autocmd")
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+" Only define it when not defined already.
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+		  \ | wincmd p | diffthis
+endif
+
+"{ powerline
+set nocompatible
+set t_Co=256
+set laststatus=2
+let g:Powerline_symbols = 'fancy'
+
+set laststatus=2 
+set t_Co=256 
+let g:Powerline_symbols = 'fancy' 
+let Powerline_symbols = 'compatible' 
+set encoding=utf8
+
+"}
+
+"{youcompleteme
+"设置error和warning的提示符，如果没有设置，ycm会以syntastic的
+" g:syntastic_warning_symbol 和 g:syntastic_error_symbol 这两个为准
+let g:ycm_error_symbol='>>'
+let g:ycm_warning_symbol='>*'
+let g:ycm_key_detailed_diagnostics = '<leader>d'
+let g:ycm_confirm_extra_conf = 1
+let g:ycm_key_invoke_completion = '<C-x><C-i>'
+let g:ycm_collect_identifiers_from_tags_files = 1
+
+nnoremap <leader>gc :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>gg :YcmCompleter GoToDefinitionElseDeclaration<CR>
+"nmap <F4> :YcmDiags<CR>
+
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+set completeopt-=preview
+let g:ycm_confirm_extra_conf=0
+let g:ycm_cache_omnifunc=0
+let g:ycm_complete_in_comments=1
+let g:ycm_min_num_of_chars_for_completion=1
+let g:ycm_use_ultisnips_completer=0
+"}youcompleteme
+
+"{aireline
+set laststatus=2
+set t_Co=256 
+let g:Powerline_symbols='unicode'
+"}aireline
+
+"{lookupfile setting
+ let g:LookupFile_MinPatLength = 1               "最少输入2个字符才开始查找
+ let g:LookupFile_PreserveLastPattern = 0        "不保存上次查找的字符串
+ let g:LookupFile_PreservePatternHistory = 1     "保存查找历史
+ let g:LookupFile_AlwaysAcceptFirst = 1          "回车打开第一个匹配项目
+ let g:LookupFile_AllowNewFiles = 0              "不允许创建不存在的文件
+ if filereadable("./filenametags")                "设置tag文件的名字
+     let g:LookupFile_TagExpr = '"./filenametags"'
+     "let g:LookupFile_TagExpr = string('./filenametags')
+ endif
+
+"}lookupfile
+
+"-------------------------------------
+execute pathogen#infect()
+"-------------------------------------
+"使用颜色配色方案
+set background=dark
+colorscheme solarized
+hi Normal ctermfg=15
+set colorcolumn=100
+
+highlight clear SignColumn
+highlight GitGutterAdd ctermfg=green
+highlight GitGutterChange ctermfg=yellow
+highlight GitGutterDelete ctermfg=red
+highlight GitGutterChangeDelete ctermfg=yellow
+
+" 高亮当前行
+set cursorline
+hi cursorline guibg=#333333
+hi CursorColumn ctermfg=15
+
+" ctrl+方向实现窗口移动
+"map <C-j> <C-W>j
+"map <C-k> <C-W>k
+"map <C-h> <C-W>h
+"map <C-l> <C-W>l
+if $TERM_PROGRAM == "Apple_Terminal"
+    let g:solarized_termcolors=256
+endif
+syntax on
+let g:solarized_termtrans=1
+set background=dark
+colorscheme solarized
+
+"php xdebug
+"（该端口必须与xdebug.remote_port相同）
+let g:debuggerPort=9010 
+"（代表数组调试深度配置）
+let g:debuggerMaxDepth=5
+
+nnoremap <leader>f5 <Plug>LookupFile
+
+map <LEADER>f1 :python debugger_resize()<cr>
+map <LEADER>f2 :python debugger_command('step_into')<cr>
+map <LEADER>f3 :python debugger_command('step_over')<cr>
+map <LEADER>f4 :python debugger_command('step_out')<cr>
+
+"map <Leader>dr :python debugger_resize()<cr>
+"map <Leader>di :python debugger_command('step_into')<cr>
+"map <Leader>do :python debugger_command('step_over')<cr>
+"map <Leader>dt :python debugger_command('step_out')<cr>
+
+nnoremap ,e :python debugger_watch_input("eval")<cr>A
+
+map <LEADER>F5  :python debugger_run()<cr>
+map <LEADER>F6  :python debugger_quit()<cr>
+map <LEADER>F7  :python debugger_command('step_into')<cr>
+map <LEADER>F8  :python debugger_command('step_over')<cr>
+map <LEADER>F9  :python debugger_command('step_out')<cr>
+map <LEADER>F11 :python debugger_context()<cr>
+map <LEADER>F12 :python debugger_property()<cr>
+map <LEADER>F11 :python debugger_watch_input("context_get")<cr>A<cr>
+map <LEADER>F12 :python debugger_watch_input("property_get", '<cword>')<cr>A<cr>
+
+
+
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+"
+"listtoggle
+let g:lt_location_list_toggle_map = '<leader>l'
+let g:lt_quickfix_list_toggle_map = '<leader>q'
+let g:lt_height = 10
+
+
+"MatchTagAlways
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \}
+let g:mta_use_matchparen_group = 1
+
+"php fucntion completion
+set dictionary+=~/.vim/bundle/php/PHP_function.txt    
+set complete-=k complete+=k
+function! InsertTabWrapper()
+    let col=col('.')-1
+    if !col || getline('.')[col-1] !~ '\k'
+        return "\<TAB>"
+    else
+        return "\<C-N>"
+    endif
+endfunction
+inoremap <TAB> <C-R>=InsertTabWrapper()<CR>
+
+
+"html 
+let g:html_indent_script1 = "inc"   
+let g:html_indent_style1 = "inc"  
+let g:html_indent_inctags = "html,body,head,tbody"  
+set smartindent "打开自动缩进  
+set expandtab "用多个空格代替 tab 键  
+setlocal shiftwidth=4 "换行自动缩进4个空格  
+setlocal tabstop=4 "tab 键相当于4个空格  

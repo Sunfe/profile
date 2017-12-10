@@ -1,0 +1,32 @@
+export PATH=$PATH:/Users/liaozhicheng/Bin:/usr/local/mysql/bin
+export tec=$HOME/Data/technic
+export ins=$HOME/Install
+export p2p=$HOME/Deploy/web/p2phunter
+
+alias vim=$HOME/Bin/vim
+alias ctags=$HOME/Bin/ctags
+alias php=$HOME/Bin/php
+#alias openssl=$HOME/Bin/openssl
+alias ll='ls -alF'
+alias la='ls -A' 
+alias l='ls -CF' 
+set -o emacs
+export PATH="/usr/local/opt/openssl/bin:$PATH"
+
+# Setting PATH for Python 3.6
+# The original version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
+export PATH
+
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/install/gcc4.9.2/lib:/home/install/llvm3.5.1/lib
+export LS_COLORS="no=00:fi=00:di=00;35:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.jpg=00;35:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:"  
+
+PS1='\[\e[31m\]\w \[\e[33m\]>\[\e[34m\]> \[\e[m\]'
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export clicolor=1
+export lscolors=gxfxaxdxcxegedabagacad

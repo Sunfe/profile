@@ -1,0 +1,22 @@
+export PATH=$PATH:/Users/liaozhicheng/Bin:/usr/local/mysql/bin
+export tec=$HOME/Data/technic
+export ins=$HOME/Install
+export p2p=$HOME/Deploy/web/p2phunter
+
+alias vim=$HOME/Bin/vim
+alias ctags=$HOME/Bin/ctags
+alias php=$HOME/Bin/php
+#alias openssl=$HOME/Bin/openssl
+alias ll='ls -alF'
+alias la='ls -A' 
+alias l='ls -CF' 
+set -o emacs
+export PATH="/usr/local/opt/openssl/bin:$PATH"
+
+# Setting PATH for Python 3.6
+# The original version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
+export PATH
+
+export clicolor=1
+export lscolors=gxfxaxdxcxegedabagacad
