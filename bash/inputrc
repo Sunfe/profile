@@ -1,6 +1,6 @@
 set completion-ignore-case on
-“\e[A”: history-search-backward
-“\e[B”: history-search-forward  
+#"\e[A”: history-search-backward
+#“\e[B”: history-search-forward  
 #map home 键，end 键 为到行首，行尾， 使命令行编辑符合我们通常的习惯
 "\e[1~": beginning-of-line
 "\e[4~": end-of-line
