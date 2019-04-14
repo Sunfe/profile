@@ -1,0 +1,15 @@
+[root@localhost home]# setenforce 0
+[root@localhost home]# 
+[root@localhost home]# iptables -F
+[root@localhost home]# 
+[root@localhost home]# service smb start
+Redirecting to /bin/systemctl start smb.service
+[root@localhost home]# 
+[root@localhost home]# smbpasswd -a lzc
+New SMB password:
+Retype new SMB password:
+Added user lzc.
+[root@localhost home]# 
+[root@localhost home]# service smb restart
+Redirecting to /bin/systemctl restart smb.service
+
