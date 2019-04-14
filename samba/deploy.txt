@@ -12,4 +12,15 @@ Added user lzc.
 [root@localhost home]# 
 [root@localhost home]# service smb restart
 Redirecting to /bin/systemctl restart smb.service
+[root@localhost home]# 
+[root@localhost /]# chmod 777 -R /home/mnt
+[root@localhost /]# 
+[root@localhost /]# 
+[root@localhost /]# 
+[root@localhost /]# 
+[root@localhost /]# setsebool -P samba_export_all_rw_on
+
+Usage:  setsebool [ -NPV ] boolean value | bool1=val1 bool2=val2...
+
+[root@localhost /]# setsebool -P samba_export_all_rw on
 
